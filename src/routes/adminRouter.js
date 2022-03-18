@@ -8,7 +8,8 @@ const sessions = JSON.parse(
 );
 
 const adminRouter = express.Router();
-adminRouter.get('/', (req, res) => {
+
+adminRouter.route('/').get((req, res) => {
     const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
     '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
 
@@ -20,7 +21,8 @@ adminRouter.get('/', (req, res) => {
             client = await MongoClient.connect(URL);
             debug('Connected to MongoDB');
 
-            const db = client.db(DB_NAME);
+            const db = client.db(DB_NAME);  //if name of db is not provided, use the name from the
+            // connection string
 
             const response = await db.collection('sessions').insertMany(sessions);
             res.json(response);
@@ -28,6 +30,7 @@ adminRouter.get('/', (req, res) => {
         catch(err) {
             debug(err.stack);
         }
+        client.close();
     })();
 })
 

@@ -8,9 +8,8 @@
 </head>
 <body>
     <h1><%= session.title %></h1>
-    <% session.speakers.map(speaker => { %>
-        <h2>Speaker: <%= speaker.name %></h2>
-    <% }); %>
+    <h2>Speaker: <%= speaker.name %> </h2>
+    <p> Speaker Bio: <%= speaker.bio %></p>
     <p><%= session.description %></p>
 </body>
 </html>

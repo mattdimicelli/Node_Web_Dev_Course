@@ -10,16 +10,15 @@ authRouter.route('/signUp').post((req, res) => {
     // console.log(req.body);
     // res.json(req.body);
 
-    //TODO: create user
-
     const { username, password } = req.body;
     const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
                 '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
 
     const DB_NAME = 'globomantics';
     (async function addUser() {
+        let client;
         try {
-            const client = await MongoClient.connect(URL);
+            client = await MongoClient.connect(URL);
             const db = client.db(DB_NAME);
             const { insertedId } = await db.collection('users').insertOne({ username, password });
             const user = await db.collection('users').findOne({ _id: insertedId});
@@ -31,20 +30,23 @@ authRouter.route('/signUp').post((req, res) => {
         catch(err) {
             debug(err);
         }
+        client.close();
     })();
 });
 
-authRouter.route('/signin')
+authRouter.route('/signIn')
     .get((req, res) => {
+        console.log(req.user);
         res.render('signin');
     })
     .post(passport.authenticate('local', {
-    successRedirect: '/auth/profile',
-    failureMessage: '/',
+        successRedirect: '/auth/profile',
+        failureRedirect: '/',
     }));
 
 authRouter.route('/profile').get((req, res) => {
     res.json(req.user);
+
 })
 
 export default authRouter;

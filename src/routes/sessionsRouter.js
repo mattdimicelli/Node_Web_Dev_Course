@@ -6,8 +6,18 @@ const sessions = JSON.parse(
 import { MongoClient, ObjectId } from 'mongodb';
 import debugUninitialized from 'debug';
 const debug = debugUninitialized('app:sessionsRouter');
+import speakerService from '../services/speakerService.js';
 
 const sessionsRouter = express.Router();
+
+sessionsRouter.use((req, res, next) => {
+    if (req.user) {  // if passport has put a user object into the equest object
+        next();
+    }
+    else {
+        res.redirect('/auth/signIn');
+    }
+});
 
 sessionsRouter.route('/').get((req, res) => {
     const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
@@ -29,8 +39,10 @@ sessionsRouter.route('/').get((req, res) => {
         catch(err) {
             debug(err.stack);
         }
+        client.close();
     })();
-    });
+});
+
 sessionsRouter.route('/:id').get((req, res) => {
     const id = req.params.id;
     const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
@@ -47,11 +59,14 @@ sessionsRouter.route('/:id').get((req, res) => {
             const db = client.db(DB_NAME);
 
             const session = await db.collection('sessions').findOne({ _id: ObjectId(id)});
-            res.render('session', { session });    
+            const speakerId = session.speakers[0].id;
+            const speaker = await speakerService().getSpeakerById(speakerId);
+            res.render('session', { session, speaker });    
         }
         catch(err) {
             debug(err.stack);
         }
+        client.close();
     })();
 });
 
