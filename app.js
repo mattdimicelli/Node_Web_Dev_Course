@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import chalk from 'chalk';
 import debugUninitialized from 'debug';
@@ -19,7 +20,7 @@ import session from 'express-session';
 // the default server-side session storage, MemoryStore, is not designed for production
 import configurePassport from './src/config/passport.js';
 
-
+console.log(process.env)
 const app = express();
 const PORT = process.env.PORT  || 3000;
 import sessionsRouter from './src/routes/sessionsRouter.js';

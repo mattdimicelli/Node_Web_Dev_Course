@@ -6,8 +6,8 @@ import { MongoClient } from 'mongodb';
 
 function localStrategy() {
     passport.use(new LocalStrategy((username, password, done) => {
-        const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
-                '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
+        const URL = process.env.MONGODB_URI;
+
         const DB_NAME = 'globomantics';
         (async function validateUser() {
             let client;

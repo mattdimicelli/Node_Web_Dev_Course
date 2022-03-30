@@ -20,8 +20,8 @@ sessionsRouter.use((req, res, next) => {
 });
 
 sessionsRouter.route('/').get((req, res) => {
-    const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
-                '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
+    const URL = process.env.MONGODB_URI;
+
 
     const DB_NAME = 'globomantics';
 
@@ -45,8 +45,8 @@ sessionsRouter.route('/').get((req, res) => {
 
 sessionsRouter.route('/:id').get((req, res) => {
     const id = req.params.id;
-    const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
-                '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
+    const URL = process.env.MONGODB_URI;
+
 
     const DB_NAME = 'globomantics';
 

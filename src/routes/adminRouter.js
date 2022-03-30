@@ -10,8 +10,7 @@ const sessions = JSON.parse(
 const adminRouter = express.Router();
 
 adminRouter.route('/').get((req, res) => {
-    const URL = 'mongodb+srv://mrd2689a_globomantics:Ua2QNisYENTc6t@globomantics' +
-    '.sehz7.mongodb.net/globomantics?retryWrites=true&w=majority';
+    const URL = process.env.MONGODB_URI;
 
     const DB_NAME = 'globomantics';
 
